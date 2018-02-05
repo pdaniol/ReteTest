@@ -1,0 +1,30 @@
+package pl.edu.agh;
+dialect  "mvel"
+
+rule "Minors are not allowed to buy alcohol"
+   when
+    $client : Person( age < 18 && desiredProduct.equals("beer"))
+    then
+    System.out.println("\n *** Warning! You are not allowed to buy alcohol! *** \n");
+end
+
+
+rule "Adults can buy beer for 5pln"
+   when
+    $client : Person( age >= 18 && money>=5.0 && desiredProduct.equals("beer"))
+    then
+    System.out.println("\n *** Ok, here's your beer! *** \n");
+    $client.setMoney($client.getMoney()-5.0);
+    $client.setDesiredProduct("nothing");
+    update($client);
+end
+
+rule "Evryone can buy iPhone X for 5000pln"
+   when
+    $client : Person(money>=5000.0 && desiredProduct.equals("iPhone"))
+    then
+    System.out.println("\n *** WOW, iPhone X is yours! ****\n");
+    $client.setMoney($client.getMoney()-5000.0);
+    $client.setDesiredProduct("nothing");
+    update($client);
+end
